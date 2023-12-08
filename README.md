@@ -1,20 +1,26 @@
-# Parallel Computation Course Repository - HCMUS-VNUHCM
+# Final Project - [Course] Big Data in Use
 
-## Inforation
+## Information
 
-- Student: Nguyễn Thế Hoàng (20120090)
-- Instructor:
+- Name project: **Fake News Detection in Big Data Scenario**
+- Group: Allin
+- Instructor: PhD. Nguyễn Ngọc Thảo
 - Department: Computer Science
 
 ## About repository
 
-This repository contains tasks description, source code and other related documents for this course. It includes:
+This repository contains propsal, tasks, descriptions, source code and other related resources for this course.
 
-- x laboratories
-- 1 final project
+## System requirement
 
-### System requirement
+N/A
 
-Without further notices, every projects/labs. in this repository is self-contained, excep we may need:
+## Development Guideline
 
-- CUDA and related NVIDIA drivers installed on local system.
+### Github Commit Message
+
+Try to follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) and choose type of commits from [here](https://www.conventionalcommits.org/en/v1.0.0/) when you do a commit. This will help set up the standard and is more easy to follow the repository.
+
+### Misc
+
+I suggest you install CoPilot of Github (Mircrosoft) for quicker coding in some cubersome, tedious or boring tasks.
