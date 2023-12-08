@@ -26,6 +26,10 @@ client = pymongo.MongoClient(uri)
 NewsDataset = client['NewsDataset']
 ```
 
+- List of Database:
+  - `NewsDataset`: Contains collections of multiple original (raw) dataset.
+  - ``: Conatians collections of multiple processed dataset.
+
 ### Dataset
 
 #### VNFD
