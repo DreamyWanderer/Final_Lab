@@ -13,9 +13,24 @@ This repository contains propsal, tasks, descriptions, source code and other rel
 
 ## System requirement
 
-N/A
-
 ## Development Guideline
+
+### Connet to Microsoft Azure MongoDB
+
+Use following snippet:
+
+```[Python]
+uri = "mongodb://dreamywanderer:fIheB7sQzEsjH3U6WXmOXoVP1Hj79V4Xom1pNV0uHNbNBal0Lx75X6fwSovFOxXFftvFAMsf5SGoACDboPqXRA==@dreamywanderer.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@dreamywanderer@"
+
+client = pymongo.MongoClient(uri)
+NewsDataset = client['NewsDataset']
+```
+
+### Dataset
+
+#### VNFD
+
+Download VNFD dataset. Extract the folder `Fake_Real_Dataset` and put into `Dataset\Raw\VNFD`. Run `VNFD.py` to push those data to MongoDB. However, due to the inconsistency of scheme of the dataset, we need to change keys suitably in `VNFD.py`.
 
 ### Github Commit Message
 
