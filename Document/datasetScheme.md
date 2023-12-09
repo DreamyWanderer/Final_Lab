@@ -15,4 +15,6 @@
 8. Author/List of Authors (`author`)
 9. Date news created (`date`)
 
+For any empty field: set `null`
+
 Each colleted news will be saved as a document with above features. The features may be changed in the future.
