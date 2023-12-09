@@ -36,6 +36,10 @@ NewsDataset = client['NewsDataset']
 
 ### Dataset
 
+#### General dataset scheme
+
+Every crawled dataset before pushed to database need to convert to json with features described in `Document/denineScheme.md`.
+
 #### VNFD
 
 Download VNFD dataset. Extract the folder `Fake_Real_Dataset` and put into `Dataset\Raw\VNFD`. Run `VNFD.py` to push those data to MongoDB. However, due to the inconsistency of scheme of the dataset, we need to change keys suitably in `VNFD.py`.
