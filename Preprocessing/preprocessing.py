@@ -4,13 +4,16 @@ import pymongo
 
 import nltk
 import re
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
+from pyvi import ViTokenizer
+
 nltk.download('punkt')
 nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 uri = "mongodb://dreamywanderer:fIheB7sQzEsjH3U6WXmOXoVP1Hj79V4Xom1pNV0uHNbNBal0Lx75X6fwSovFOxXFftvFAMsf5SGoACDboPqXRA==@dreamywanderer.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@dreamywanderer@"
 
@@ -37,7 +40,7 @@ def lowercase(text):
 
 # Tokenization
 def tokenize(text):
-    return word_tokenize(text)
+    return word_tokenize(ViTokenizer.tokenize(text))
 
 # Remove stop words
 def remove_stopwords(text):
@@ -67,7 +70,9 @@ def preprocess_text(text, steps):
 
 # # Usage example
 
-# text = "This is an example sentence. , ;"
+# text = "sáng ngày Công nghệ thông tin là một ngành học rất thú vị."
+
+# print(tokenize(text))
 
 # # Define the desired preprocessing steps in the pipeline
 # pipeline_steps = [lowercase, tokenize, remove_stopwords, remove_punctuation, lemmatize]
@@ -83,6 +88,7 @@ def preprocess_text(text, steps):
 
 # Fine-tune preprocessing pipeline here 
 pipeline_steps = [lowercase, tokenize, remove_stopwords, remove_punctuation, lemmatize, stemming]
+# pipeline_steps = [lowercase, tokenize]
 
 
 for doc in VNFD.find():
