@@ -18,3 +18,23 @@
 For any empty field: set `null`
 
 Each colleted news will be saved as a document with above features. The features may be changed in the future.
+
+## About `topic` field
+
+Beside using topic extraction tools later, we try to define a predefined scope of **general topics**. It means each of news sample has at least $1$ value in `topic` list field, and the first one is that general topic. We establish this general `topic` to avoid the case that all dataset does not have common `topic` values which can make EDA meaningless. Certainly each news sample still has other values in `topic`, which is can be considered specific topics.
+
+The following is the list of general topics (build from VnExpress.net):
+
+- Thời sự
+- Thế giới
+- Kinh tế
+- Bất động sản
+- Khoa học
+- Giải trí
+- Thể thao
+- Pháp luật
+- Giáo dục
+- Sức khỏe
+- Đời sống
+- Du lịch
+- Số hóa (Công nghệ)
