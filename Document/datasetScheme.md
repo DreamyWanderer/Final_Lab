@@ -11,8 +11,8 @@
 
 5. URL/List of URLs of images of collected news (Do not download images yet due to storage space limitation) (`imageURL`)
 6. Domain of URL (or name of news website) (`domain`)
-7. Topic/List of Topics of text content (can collect from given keywords, tags) (`topic`)
-8. Author/List of Authors (`author`)
+7. List of Topics of text content (can collect from given keywords, tags) (`topic`)
+8. List of Authors (`author`)
 9. Date news created (`date`)
 
 For any empty field: set `null`
