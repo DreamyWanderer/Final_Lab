@@ -30,7 +30,8 @@ class NewsDatabase():
         """Upload a dataset to the database
 
         Args:
-            datasetFile (str): The path to the dataset
+            datasetFile (str): The path to the dataset. This file must be a JSON file, contains a list of articles
+            as seperate JSON objects.
         """        
         with open(datasetFile, 'r', encoding="utf-8") as file:
             dataset = json.load(file)

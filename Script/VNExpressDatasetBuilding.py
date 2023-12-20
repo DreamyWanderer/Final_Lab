@@ -1,9 +1,9 @@
 """Crawling Vietnamese news articles from multiples websites and save them to a dataset.
 """
 
-# Add Source folder which is the sibling of the parent directory of this script to sys.path 
 import os
 import sys
+# Add the root folder of project to sys.path for relative importing when running this script directly
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import argparse
