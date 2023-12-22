@@ -4,13 +4,16 @@ import pymongo
 
 import nltk
 import re
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
+from pyvi import ViTokenizer
+
 nltk.download('punkt')
 nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 uri = "mongodb://dreamywanderer:fIheB7sQzEsjH3U6WXmOXoVP1Hj79V4Xom1pNV0uHNbNBal0Lx75X6fwSovFOxXFftvFAMsf5SGoACDboPqXRA==@dreamywanderer.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@dreamywanderer@"
 
@@ -20,7 +23,7 @@ NewsDataset = client['NewsDataset']
 # Get name of all existing collections in the NewsDataset
 print(NewsDataset.list_collection_names())
 
-
+exist_collection = NewsDataset.list_collection_names()
 VNFD = NewsDataset['VNFD']
 
 
@@ -37,7 +40,7 @@ def lowercase(text):
 
 # Tokenization
 def tokenize(text):
-    return word_tokenize(text)
+    return word_tokenize(ViTokenizer.tokenize(text))
 
 # Remove stop words
 def remove_stopwords(text):
@@ -65,36 +68,29 @@ def preprocess_text(text, steps):
         text = step(text)
     return text
 
-# # Usage example
-
-# text = "This is an example sentence. , ;"
-
-# # Define the desired preprocessing steps in the pipeline
-# pipeline_steps = [lowercase, tokenize, remove_stopwords, remove_punctuation, lemmatize]
-
-# # Apply the preprocessing pipeline to the text
-# preprocessed_text = preprocess_text(text, pipeline_steps)
-
-# print(preprocessed_text)
-
-
-# # Preprocessing text content(`content`) in the collection VNFD using tokenization, lemmatization, and stopword removal using preprocess_text function
 
 
 # Fine-tune preprocessing pipeline here 
 pipeline_steps = [lowercase, tokenize, remove_stopwords, remove_punctuation, lemmatize, stemming]
+# pipeline_steps = [lowercase, tokenize]
 
 
-for doc in VNFD.find():
-    if (doc['content'] == None):
+
+for collection in exist_collection:
+    if (collection == 'VNFDPreprocessed'):
         continue
-    doc['content'] = preprocess_text(doc['content'], pipeline_steps)
-    print(doc)
-    # Insert or update one document in the collection VNFDPreprocessed
-    VNFDPreprocessed.update_one({'_id': doc['_id']}, {"$set": doc}, upsert=True)
+    print(collection)
+    try:
+        for doc in NewsDataset[collection].find():
+            if (doc['content'] == None):
+                continue
+            doc['content'] = preprocess_text(doc['content'], pipeline_steps)
+            # print(doc)
+            # Insert or update one document in the collection VNFDPreprocessed
+            VNFDPreprocessed.update_one({'_id': doc['_id']}, {"$set": doc}, upsert=True)
+    except:
+        print("Error when preprocessing collection", collection)
+        continue
 
-
-
-
-
+    
 
