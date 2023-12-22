@@ -9,12 +9,14 @@ def make_dataframe():
 
     data = {}
     columns = list(VNFD.find()[0].keys())
+    columns.remove('author')
     for col in columns:
         data[col] = []
 
     for doc in VNFD.find():
         for col in columns:
             data[col].append(doc[col])   
-
+    
     df = pd.DataFrame(data).drop(['_id'], axis = 1)
+    df['topic'] = df['topic'].str.get(0)
     return df

@@ -9,6 +9,5 @@ NewsDataset = client['NewsDataset']
 print(NewsDataset.list_collection_names())
 
 # Print all documents in the collection VNFD
-VNFD = NewsDataset['VNFD']
-""" for doc in VNFD.find():
-    print(doc) """
+VNFD = NewsDataset['VNFDPreprocessed']
+
