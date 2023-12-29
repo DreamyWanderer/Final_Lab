@@ -1,6 +1,6 @@
-import datetime
 from pathlib import Path
 import pymongo
+from pymongo.errors import DuplicateKeyError
 import json
 
 class NewsDatabase():
@@ -24,7 +24,11 @@ class NewsDatabase():
         Args:
             news (dict): The article
         """        
-        self.collection.insert_one(news)
+        try:
+            self.collection.insert_one(news)
+        except DuplicateKeyError:
+            # Handle the exception here
+            print(f"Duplicate article: {news['url']} - {news['title']}")
 
     def uploadDataset(self, datasetFile: str):
         """Upload a dataset to the database
