@@ -1,8 +1,31 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
+import seaborn as sns
 
+def calculate_tfidf(documents):
+    # Create a TfidfVectorizer
+    tfidf_vectorizer = TfidfVectorizer()
 
-def cal_TypeTokenRatio(text):
+    # Fit and transform the documents
+    # tfidf_matrix = vectorizer.fit_transform([' '.join(document) for document in documents])
+    document_texts = [' '.join(doc) for doc in documents]
+
+    # Get feature names (terms)
+    # feature_names = vectorizer.get_feature_names_out()
+    tfidf_matrix = tfidf_vectorizer.fit_transform(document_texts)
+
+    # Get feature names (terms)
+    feature_names = tfidf_vectorizer.get_feature_names_out()
+
+    # Convert TF-IDF matrix to a dense DataFrame for readability
+    tfidf_df = pd.DataFrame(tfidf_matrix.toarray(), columns=feature_names)
+
+    return tfidf_df
+def visualize_tfidf(tfidf_df, ax, title):
+    sns.heatmap(tfidf_df.sample(n=100), cmap='viridis', annot=False, cbar=True, ax=ax)
+    ax.set_title(title)
+
+def cal_TypeTokenRatio(words):
     """
     Calculate the Type-Token Ratio (TTR) of a given text.
 
@@ -12,8 +35,6 @@ def cal_TypeTokenRatio(text):
     Returns:
     - ttr (float): The Type-Token Ratio.
     """
-    # Tokenize the text into words
-    words = text.split()
 
     # Calculate the total number of tokens
     total_tokens = len(words)
@@ -28,56 +49,6 @@ def cal_TypeTokenRatio(text):
     return ttr
 
 
-def calculate_tfidf(documents):
-    # Create a TfidfVectorizer
-    vectorizer = TfidfVectorizer()
-
-    # Fit and transform the documents
-    tfidf_matrix = vectorizer.fit_transform(documents)
-
-    # Get feature names (terms)
-    feature_names = vectorizer.get_feature_names_out()
-
-    # Create a DataFrame to store the result
-    result_df = pd.DataFrame(columns=['document', 'term', 'tfidf'])
-
-    # Extract TF-IDF values and populate the DataFrame
-    for i, doc in enumerate(documents):
-        feature_index = tfidf_matrix[i, :].nonzero()[1]
-        tfidf_scores = zip(feature_index, [tfidf_matrix[i, x] for x in feature_index])
-        for term_index, tfidf in tfidf_scores:
-            result_df = result_df.append({
-                'document': f'doc{i + 1}',
-                'term': feature_names[term_index],
-                'tfidf': tfidf
-            }, ignore_index=True)
-
-    return result_df
-
-def count_syllables_vietnamese(word):
-    vowels = 'aeiouy'
-    syllables = 0
-    prev_char = None
-
-    for char in word:
-        if char in vowels:
-            if prev_char is None or prev_char not in vowels:
-                syllables += 1
-        prev_char = char
-
-    return syllables
-
-def cal_readability(content):
-    words = content.split()
-    total_syllables = 0
-
-    for word in words:
-        syllables = count_syllables_vietnamese(word)  # Replace with your preferred method for counting syllables in Vietnamese
-        total_syllables += syllables
-
-    average_syllables_per_word = total_syllables / len(words)
-
-    return average_syllables_per_word
 
 import re
 
@@ -130,3 +101,25 @@ def cal_syntactic_complexity(content):
 
 
 
+def count_syllables_vietnamese(word):
+    vowels = 'aeiouy'
+    syllables = 0
+    prev_char = None
+
+    for char in word:
+        if char in vowels:
+            if prev_char is None or prev_char not in vowels:
+                syllables += 1
+        prev_char = char
+
+    return syllables
+def cal_readability(words):
+    total_syllables = 0
+
+    for word in words:
+        syllables = count_syllables_vietnamese(word)  # Replace with your preferred method for counting syllables in Vietnamese
+        total_syllables += syllables
+
+    average_syllables_per_word = total_syllables / len(words)
+
+    return average_syllables_per_word
