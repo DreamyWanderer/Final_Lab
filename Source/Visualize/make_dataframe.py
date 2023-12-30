@@ -9,7 +9,6 @@ def make_dataframe():
 
     data = {}
     columns = list(VNFD.find()[0].keys())
-    columns.remove('author')
     for col in columns:
         data[col] = []
 
