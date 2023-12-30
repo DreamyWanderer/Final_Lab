@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot
 
 def calculate_tfidf(documents):
     # Create a TfidfVectorizer
@@ -62,7 +63,7 @@ def count_clauses(sentence):
         # Add more patterns as needed based on your requirements and language characteristics
     ]
 
-    count = 0
+    count = 1
     for pattern in clause_patterns:
         matches = re.findall(pattern, sentence, flags=re.UNICODE)
         count += len(matches)
@@ -86,7 +87,10 @@ def cal_syntactic_complexity(content):
 
         # Identify and store the syntactic structures used in the sentence
         syntactic_structures.add(sentence)  # Example: Store the whole sentence as a syntactic structure
-
+    if total_sentences == 0:
+        total_sentences = 1
+    if total_clauses == 0:
+        total_clauses = 1
     average_sentence_length = total_words / total_sentences
     average_clause_length = total_words / total_clauses
     unique_syntactic_structures = len(syntactic_structures)
@@ -98,7 +102,6 @@ def cal_syntactic_complexity(content):
     }
 
     return syntactic_complexity
-
 
 
 def count_syllables_vietnamese(word):
@@ -123,3 +126,4 @@ def cal_readability(words):
     average_syllables_per_word = total_syllables / len(words)
 
     return average_syllables_per_word
+
