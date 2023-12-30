@@ -45,7 +45,7 @@ def cal_TypeTokenRatio(words):
     total_types = len(unique_words)
 
     # Calculate the Type-Token Ratio (TTR)
-    ttr = total_types / total_tokens
+    ttr = total_types / total_tokens     # num of unique / total
 
     return ttr
 
@@ -116,6 +116,7 @@ def count_syllables_vietnamese(word):
         prev_char = char
 
     return syllables
+
 def cal_readability(words):
     total_syllables = 0
 
