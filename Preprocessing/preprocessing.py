@@ -9,6 +9,9 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
+# import CurosrNotFound
+from pymongo.errors import CursorNotFound
+
 from pyvi import ViTokenizer
 
 nltk.download('punkt')
@@ -23,11 +26,19 @@ NewsDataset = client['NewsDataset']
 # Get name of all existing collections in the NewsDataset
 print(NewsDataset.list_collection_names())
 
-exist_collection = NewsDataset.list_collection_names()
 VNFD = NewsDataset['VNFD']
 
 
 VNFDPreprocessed = NewsDataset['VNFDPreprocessed']
+# Remove all data in VNFDPreprocessed
+# VNFDPreprocessed.delete_many({})
+
+print(NewsDataset.list_collection_names())
+exist_collection = NewsDataset.list_collection_names()
+# Create new collection name 'VNFDPreprocessed'
+# VNFDPreprocessed = NewsDataset['VNFDPreprocessed']
+
+
 # Remove stop words vietnamese using vietnamese-stopwords.txt
 stopwords_filepath = './Preprocessing/vietnamese-stopwords.txt'
 
@@ -70,27 +81,54 @@ def preprocess_text(text, steps):
 
 
 
-# Fine-tune preprocessing pipeline here 
+# # Fine-tune preprocessing pipeline here 
 pipeline_steps = [lowercase, tokenize, remove_stopwords, remove_punctuation, lemmatize, stemming]
 # pipeline_steps = [lowercase, tokenize]
 
-
-
+count = 0
 for collection in exist_collection:
     if (collection == 'VNFDPreprocessed'):
         continue
     print(collection)
-    try:
-        for doc in NewsDataset[collection].find():
-            if (doc['content'] == None):
-                continue
-            doc['content'] = preprocess_text(doc['content'], pipeline_steps)
-            # print(doc)
-            # Insert or update one document in the collection VNFDPreprocessed
-            VNFDPreprocessed.update_one({'_id': doc['_id']}, {"$set": doc}, upsert=True)
-    except:
-        print("Error when preprocessing collection", collection)
-        continue
+
+    processed = 0
+
+    while True:
+        custom_cursor = NewsDataset[collection].find(no_cursor_timeout=True).skip(processed )
+
+        try:
+            for doc in custom_cursor:
+                try:
+                    if (doc['content'] == None):
+                        continue
+                    count += 1
+                    if count % 1000 == 0:
+                        print(count)
+                    doc['content'] = preprocess_text(doc['content'], pipeline_steps)
+                    # print(doc)
+                    # Insert or update one document in the collection VNFDPreprocessed
+                    VNFDPreprocessed.update_one({'_id': doc['_id']}, {"$set": doc}, upsert=True)
+                    processed += 1
+
+                    # Insert document into VNFDPreprocessed
+                    # VNFDPreprocessed.insert_one(doc)
+                except:
+                    print("Error when preprocessing collection", collection)
+                    continue
+            custom_cursor.close()
+            print("Break")
+            break
+        except CursorNotFound:
+            print("Lost cursor. Retry with skip")
+    
 
     
 
+# print("Total documents:", count)
+# print("Error documents:", error)
+print("Total number of documents in VNFD:", VNFD.count_documents({}))
+# 'FakeVN', 'VNFD', 'VnExpress'
+print("Total in FakeVN:", NewsDataset['FakeVN'].count_documents({}))
+
+print("Total in VNE:", NewsDataset['VnExpress'].count_documents({}))
+print("Total number of documents in VNFDPreprocessed:", VNFDPreprocessed.count_documents({}))
