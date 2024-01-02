@@ -76,7 +76,7 @@ def cal_syntactic_complexity(content):
     total_sentences = len(sentences)
     total_words = 0
     total_clauses = 0
-    syntactic_structures = set()
+
 
     for sentence in sentences:
         words = sentence.split()
@@ -85,27 +85,23 @@ def cal_syntactic_complexity(content):
         clause_count = count_clauses(sentence)
         total_clauses += clause_count
 
-        # Identify and store the syntactic structures used in the sentence
-        syntactic_structures.add(sentence)  # Example: Store the whole sentence as a syntactic structure
     if total_sentences == 0:
         total_sentences = 1
     if total_clauses == 0:
         total_clauses = 1
     average_sentence_length = total_words / total_sentences
     average_clause_length = total_words / total_clauses
-    unique_syntactic_structures = len(syntactic_structures)
 
     syntactic_complexity = {
         'average_sentence_length': average_sentence_length,
-        'average_clause_length': average_clause_length,
-        'unique_syntactic_structures': unique_syntactic_structures
+        'average_clause_length': average_clause_length
     }
 
     return syntactic_complexity
 
 
 def count_syllables_vietnamese(word):
-    vowels = 'aeiouy'
+    vowels = 'aeiouyàáảãạăằắẳẵặâầấẩẫậđèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ'
     syllables = 0
     prev_char = None
 
