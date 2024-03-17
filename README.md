@@ -1,5 +1,7 @@
 # Final Project - [Course] Big Data in Use
 
+**This project is only for educational purpose only. It by no mean can be used for more serious, high accuracy expectation scenarios without further modification of used methods and existing codebase.**
+
 ## Information
 
 - Name project: **Fake News Detection in Big Data Scenario**
